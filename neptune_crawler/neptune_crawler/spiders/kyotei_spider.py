@@ -1,4 +1,7 @@
 import scrapy
+from datetime import date
+from dateutil.rrule import rrule, DAILY
+
 
 # item class included here
 class RaceItem(scrapy.Item):
@@ -68,12 +71,19 @@ class KyoteiSpider(scrapy.Spider):
     name = "kyotei"
 
     def start_requests(self):
+        a = date(2020, 6, 1)
+        b = date(2020, 10, 31)
 
-        for arena in range(1,30):
-            arena = "{0:0=2d}".format(arena)
-            for race_number in range(1,12):
-                url = 'https://race.kyotei.club/info/info-20201212-{1}-{0}.html'.format(race_number, arena)
-                yield scrapy.Request(url=url, callback=self.parse)
+        for dt in rrule(DAILY, dtstart=a, until=b):
+            dt = dt.strftime("%Y%m%d")
+            for arena in range(1,24):
+                arena = "{0:0=2d}".format(arena)
+                for race_number in range(1,12):
+                    url = 'https://race.kyotei.club/info/info-{2}-{1}-{0}.html'.format(race_number, arena, dt)
+                    yield scrapy.Request(url=url, callback=self.parse)
+
+
+
 
 
     def parse(self, response):

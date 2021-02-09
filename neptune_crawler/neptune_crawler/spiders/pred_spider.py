@@ -107,8 +107,8 @@ class KyoteiSpider(scrapy.Spider):
     name = "pred"
 
     def start_requests(self):
-        dt = '20210204'
-        todays_arena = [3,4,5,7,8,18,19,20,22,23,24]
+        dt = '20210206'
+        todays_arena = [1,2,3,4,7,8,9,12,15,16,18,21,23]
         for arena in todays_arena:
             arena = "{0:0=2d}".format(arena)
             for race_number in range(1,12):
